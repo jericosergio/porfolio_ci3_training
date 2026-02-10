@@ -22,6 +22,9 @@
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .clickable-image {
+            cursor: pointer;
+        }
         .metric-box {
             background: rgba(255,255,255,0.1);
             padding: 20px;
@@ -97,7 +100,10 @@
                     <?php $featured_image = isset($project['featured_image']) ? $project['featured_image'] : $project['image']; ?>
                     <img src="<?php echo htmlspecialchars($featured_image, ENT_QUOTES, 'UTF-8'); ?>" 
                          alt="<?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>" 
-                         class="project-image">
+                        class="project-image clickable-image"
+                        data-bs-toggle="modal"
+                        data-bs-target="#imagePreviewModal"
+                        data-image="<?php echo htmlspecialchars($featured_image, ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
 
@@ -145,12 +151,15 @@
                     <div class="mb-5">
                         <h3 class="fw-bold mb-4" style="color: #343434;">Project Gallery</h3>
                         <div class="row g-3">
-                            <?php foreach ($project['images'] as $gallery_image): ?>
+                            <?php foreach ($project['images'] as $index => $gallery_image): ?>
                             <div class="col-md-6">
                                 <div class="card border-0 shadow-sm">
                                     <img src="<?php echo htmlspecialchars($gallery_image, ENT_QUOTES, 'UTF-8'); ?>" 
-                                         class="img-fluid rounded" 
-                                         alt="<?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>">
+                                         class="img-fluid rounded clickable-image" 
+                                         alt="<?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#galleryCarouselModal"
+                                         data-bs-slide-to="<?php echo $index; ?>">
                                 </div>
                             </div>
                             <?php endforeach; ?>
@@ -199,6 +208,79 @@
         </div>
     </footer>
 
+    <!-- Image Preview Modal -->
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark border-0">
+                <div class="modal-body p-0">
+                    <img id="imagePreviewModalImg" src="" alt="Preview" class="w-100 rounded">
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Carousel Modal -->
+    <?php if (isset($project['images']) && is_array($project['images']) && count($project['images']) > 1): ?>
+    <div class="modal fade" id="galleryCarouselModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark border-0">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+                            <?php foreach ($project['images'] as $index => $gallery_image): ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <img src="<?php echo htmlspecialchars($gallery_image, ENT_QUOTES, 'UTF-8'); ?>"
+                                     class="d-block w-100"
+                                     alt="<?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>">
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Single image preview modal
+        document.querySelectorAll('[data-image]').forEach((img) => {
+            img.addEventListener('click', () => {
+                const target = document.getElementById('imagePreviewModalImg');
+                if (target) {
+                    target.src = img.getAttribute('data-image');
+                }
+            });
+        });
+
+        // Gallery carousel modal - set active slide based on clicked image
+        const galleryModal = document.getElementById('galleryCarouselModal');
+        if (galleryModal) {
+            galleryModal.addEventListener('show.bs.modal', (event) => {
+                const button = event.relatedTarget;
+                const slideIndex = button.getAttribute('data-bs-slide-to');
+                const carousel = document.querySelector('#galleryCarousel');
+                if (carousel && slideIndex) {
+                    const bsCarousel = bootstrap.Carousel.getInstance(carousel) || new bootstrap.Carousel(carousel);
+                    bsCarousel.to(parseInt(slideIndex));
+                }
+            });
+        }
+    </script>
 </body>
 </html>

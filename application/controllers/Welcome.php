@@ -113,8 +113,8 @@ My approach is objective-driven: understand stakeholder needs, trace existing da
 				array(
 					'degree' => 'Bachelor of Science in Information Technology',
 					'school' => 'St. Dominic College of Asia',
-					'location' => 'Bacoor, Cavite, Philippines',
-					'year' => '2019 - 2023',
+					'location' => 'St. Dominic Complex, Aguinaldo Hiway,Bacoor, Cavite, Philippines',
+					'year' => '2018 - 2023',
 					'honors' => '',
 					'highlights' => array(
 						'Specialized in Web Development and Database Management',
@@ -122,6 +122,22 @@ My approach is objective-driven: understand stakeholder needs, trace existing da
 						'Active participant in web development workshops and seminars'
 					)
 				),
+				array(
+					'degree' => 'Senior High School — ICT (Technical-Vocational-Livelihood Track)',
+					'school' => 'STI College Bacoor',
+					'location' => 'STI College Bacoor Bldg, Tirona Hwy, Bacoor 4102 Cavite',
+					'year' => '2016 - 2018',
+					'honors' => '',
+					'highlights' => array(
+						'IT in Mobile App and Web Development (ITMAWD) specialization',
+						'Built iOS/Android apps and optimized content for mobile and web applications',
+						'Focused on computer programming, scripting languages, and web/mobile development skills',
+						'Program Outcomes: design program logic, apply OOP skills, and web/mobile programming',
+						'Completed thesis project system Hotel Management System project using VB .NET and MySQL',
+						'Specialized Subjects: Java, HTML/CSS, JavaScript/jQuery, SQL/ASP.NET, Android, .NET',
+					)
+				),
+
 			),
 			'projects' => array(
 				array(
