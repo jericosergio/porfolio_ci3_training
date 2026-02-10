@@ -1,5 +1,5 @@
     RewriteEngine On
-    RewriteBase /portfolio/
+    RewriteBase /porfolio_ci3_training/
 
     # ✅ Serve existing files/folders directly (fixes assets + fonts 404)
     RewriteCond %{REQUEST_FILENAME} -f [OR]

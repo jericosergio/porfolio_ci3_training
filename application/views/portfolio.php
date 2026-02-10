@@ -1,296 +1,617 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?><!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Astro v5.13.2">
-    <title>Product example · Bootstrap v5.3</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/product/">
-    <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
-    <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/apple-touch-icon.png"
-        sizes="180x180">
-    <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32"
-        type="image/png">
-    <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16"
-        type="image/png">
-    <link rel="manifest" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/safari-pinned-tab.svg"
-        color="#712cf9">
-    <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#712cf9">
-    <link src="https://getbootstrap.com/docs/5.3/examples/product/product.css" rel="stylesheet">
+    <meta name="description" content="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?> - Portfolio">
+    <title><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?> | Portfolio</title>
+    <link rel="icon" type="image/png" href="<?php echo base_url('assets/favicon.ico'); ?>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem
-            }
-        }
-
-        .b-example-divider {
-            width: 100%;
-            height: 3rem;
-            background-color: #0000001a;
-            border: solid rgba(0, 0, 0, .15);
-            border-width: 1px 0;
-            box-shadow: inset 0 .5em 1.5em #0000001a, inset 0 .125em .5em #00000026
-        }
-
-        .b-example-vr {
-            flex-shrink: 0;
-            width: 1.5rem;
-            height: 100vh
-        }
-
-        .bi {
-            vertical-align: -.125em;
-            fill: currentColor
-        }
-
-        .nav-scroller {
+        .hero-section {
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            color: white;
+            padding: 100px 0 80px;
             position: relative;
-            z-index: 2;
-            height: 2.75rem;
-            overflow-y: hidden
+            overflow: hidden;
         }
-
-        .nav-scroller .nav {
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="87" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="kumiko" width="100" height="87" patternUnits="userSpaceOnUse"><g stroke="rgba(255,255,255,0.18)" stroke-width="1.2" fill="none"><path d="M 50 0 L 75 12.5 L 75 37.5 L 50 50 L 25 37.5 L 25 12.5 Z"/><path d="M 0 25 L 25 12.5 L 25 37.5 Z"/><path d="M 100 25 L 75 12.5 L 75 37.5 Z"/><path d="M 50 50 L 75 62.5 L 75 87.5"/><path d="M 50 50 L 25 62.5 L 25 87.5"/><path d="M 0 75 L 25 62.5 L 25 87.5"/><path d="M 100 75 L 75 62.5 L 75 87.5"/><line x1="25" y1="12.5" x2="75" y2="37.5"/><line x1="75" y1="12.5" x2="25" y2="37.5"/><line x1="50" y1="0" x2="50" y2="50"/><line x1="25" y1="37.5" x2="25" y2="62.5"/><line x1="75" y1="37.5" x2="75" y2="62.5"/><circle cx="50" cy="25" r="8" opacity="0.6"/><circle cx="25" cy="25" r="4" opacity="0.4"/><circle cx="75" cy="25" r="4" opacity="0.4"/><circle cx="25" cy="75" r="4" opacity="0.4"/><circle cx="75" cy="75" r="4" opacity="0.4"/></g></pattern></defs><rect width="100%" height="100%" fill="url(%23kumiko)"/></svg>');
+            opacity: 0.3;
+        }
+        .profile-img {
+            width: 280px;
+            height: 380px;
+            border-radius: 10px;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            object-fit: cover;
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            border-radius: 2px;
+        }
+        .skill-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .skill-progress {
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 100%;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .project-card img {
+            height: 220px;
+            object-fit: cover;
+        }
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
             display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .social-link {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
             text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+            text-decoration: none;
         }
-
-        .btn-bd-primary {
-            --bd-violet-bg: #712cf9;
-            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-            --bs-btn-font-weight: 600;
-            --bs-btn-color: var(--bs-white);
-            --bs-btn-bg: var(--bd-violet-bg);
-            --bs-btn-border-color: var(--bd-violet-bg);
-            --bs-btn-hover-color: var(--bs-white);
-            --bs-btn-hover-bg: #6528e0;
-            --bs-btn-hover-border-color: #6528e0;
-            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-            --bs-btn-active-color: var(--bs-btn-hover-color);
-            --bs-btn-active-bg: #5a23c8;
-            --bs-btn-active-border-color: #5a23c8
+        .social-link:hover {
+            transform: scale(1.1);
+            color: white;
         }
-
-        .bd-mode-toggle {
-            z-index: 1500
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .bd-mode-toggle .bi {
-            width: 1em;
-            height: 1em
+        .aspiration-box {
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
         }
-
-        .bd-mode-toggle .dropdown-menu .active .bi {
-            display: block !important
+        .aspiration-box::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 120px;
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            padding-bottom: 30px;
+            border-left: 2px solid #e9ecef;
+        }
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a12124 0%, #343434 100%);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #e9ecef;
+        }
+        .experience-card, .education-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .experience-card:hover, .education-card:hover {
+            transform: translateX(10px);
         }
     </style>
 </head>
 
-<body> <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-        <symbol id="check2" viewBox="0 0 16 16">
-            <path
-                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-            </path>
-        </symbol>
-        <symbol id="circle-half" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
-        </symbol>
-        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-            <path
-                d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
-            </path>
-            <path
-                d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
-            </path>
-        </symbol>
-        <symbol id="sun-fill" viewBox="0 0 16 16">
-            <path
-                d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
-            </path>
-        </symbol>
-    </svg>
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle"> <button
-            class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-            aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)"> <svg
-                class="bi my-1 theme-icon-active" aria-hidden="true">
-                <use href="#circle-half"></use>
-            </svg> <span class="visually-hidden" id="bd-theme-text">Toggle theme</span> </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-            <li> <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-                    aria-pressed="false"> <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#sun-fill"></use>
-                    </svg>
-                    Light
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg> </button> </li>
-            <li> <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-                    aria-pressed="false"> <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#moon-stars-fill"></use>
-                    </svg>
-                    Dark
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg> </button> </li>
-            <li> <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
-                    aria-pressed="true"> <svg class="bi me-2 opacity-50" aria-hidden="true">
-                        <use href="#circle-half"></use>
-                    </svg>
-                    Auto
-                    <svg class="bi ms-auto d-none" aria-hidden="true">
-                        <use href="#check2"></use>
-                    </svg> </button> </li>
-        </ul>
-    </div> <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-        <symbol id="aperture" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-            stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path
-                d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94">
-            </path>
-        </symbol>
-        <symbol id="cart" viewBox="0 0 16 16">
-            <path
-                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
-            </path>
-        </symbol>
-        <symbol id="chevron-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z">
-            </path>
-        </symbol>
-    </svg>
-    <nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
-        <div class="container"> <a class="navbar-brand d-md-none" href="#"> <svg class="bi" width="24" height="24"
-                    aria-hidden="true">
-                    <use xlink:href="#aperture"></use>
-                </svg>
-                Aperture
-            </a> <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
-                aria-controls="offcanvas" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="<?php echo base_url(); ?>">
+                <img src="<?php echo base_url('assets/jrcsrg_transparent.png'); ?>" alt="Logo" height="35">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasLabel">Aperture</h5> <button type="button"
-                        class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 justify-content-between">
-                        <li class="nav-item"><a class="nav-link" href="#" aria-label="Aperture"> <svg class="bi"
-                                    width="24" height="24" aria-hidden="true">
-                                    <use xlink:href="#aperture"></use>
-                                </svg> </a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Tour</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Product</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Enterprise</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" aria-label="Cart"> <svg class="bi" width="24"
-                                    height="24" aria-hidden="true">
-                                    <use xlink:href="#cart"></use>
-                                </svg> </a></li>
-                    </ul>
-                </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#aspirations">Aspirations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url('welcome'); ?>">Home</a></li>
+                </ul>
             </div>
         </div>
     </nav>
-    <main>
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
-            <div class="col-md-6 p-lg-5 mx-auto my-5">
-                <h1 class="display-3 fw-bold">Designed for engineers</h1>
-                <h3 class="fw-normal text-muted mb-3">Build anything you want with Aperture</h3>
-                <div class="d-flex gap-3 justify-content-center lead fw-normal"> <a class="icon-link" href="#">
-                        Learn more
-                        <svg class="bi" aria-hidden="true">
-                            <use xlink:href="#chevron-right"></use>
-                        </svg> </a> <a class="icon-link" href="#">
-                        Buy
-                        <svg class="bi" aria-hidden="true">
-                            <use xlink:href="#chevron-right"></use>
-                        </svg> </a> </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container position-relative">
+            <div class="row align-items-center gap-4">
+                <div class="col-lg-3">
+                    <div class="d-flex justify-content-center justify-content-lg-start">
+                        <img src="<?php echo base_url('assets/og-image.jpg'); ?>" alt="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" class="profile-img">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold mb-3"><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <h3 class="h4 mb-4 opacity-75"><?php echo htmlspecialchars($tagline, ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start mb-4">
+                        <a href="<?php echo htmlspecialchars($github, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="social-link">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="<?php echo htmlspecialchars($linkedin, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="social-link">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="mailto:<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" class="social-link">
+                            <i class="bi bi-envelope"></i>
+                        </a>
+                    </div>
+                    <a href="#contact" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-chat-dots me-2"></i>Get In Touch
+                    </a>
+                </div>
             </div>
-            <div class="product-device shadow-sm d-none d-md-block"></div>
-            <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
         </div>
-        <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-           sd
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">About Me</h2>
+            <div class="row mt-4">
+                <div class="col-lg-8">
+                    <p class="lead text-muted text-justify"><?php echo htmlspecialchars($about, ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-3">Quick Info</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-geo-alt me-2" style="color: #a12124;"></i>
+                                    <?php echo htmlspecialchars($location, ENT_QUOTES, 'UTF-8'); ?>
+                                </li>
+                                <?php if (isset($work_email) && !empty($work_email)): ?>
+                                <li class="mb-2">
+                                    <i class="bi bi-envelope-at me-2" style="color: #a12124;"></i>
+                                    <small><?php echo htmlspecialchars($work_email, ENT_QUOTES, 'UTF-8'); ?></small>
+                                </li>
+                                <?php endif; ?>
+                                <li class="mb-2">
+                                    <i class="bi bi-envelope me-2" style="color: #a12124;"></i>
+                                    <?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>
+                                </li>
+                            </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-       
-    </main>
-    <footer class="container py-5">
-        <div class="row">
-            <div class="col-12 col-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    class="d-block mb-2" role="img" viewBox="0 0 24 24">
-                    <title>Product</title>
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path
-                        d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94">
-                    </path>
-                </svg> <small class="d-block mb-3 text-body-secondary">&copy; 2017–2025</small> </div>
-            <div class="col-6 col-md">
-                <h5>Features</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-                </ul>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">Skills & Technologies</h2>
+            <div class="row mt-4">
+                <?php foreach ($skills as $skill): ?>
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold"><?php echo htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="text-muted"><?php echo $skill['level']; ?>%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: <?php echo $skill['level']; ?>%"></div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
             </div>
-            <div class="col-6 col-md">
-                <h5>Resources</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-                </ul>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">Work Experience</h2>
+            <p class="lead text-muted mb-5">My professional journey and accomplishments</p>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <?php foreach ($experience as $exp): ?>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="experience-card">
+                            <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap">
+                                <div>
+                                    <h4 class="fw-bold mb-1"><?php echo htmlspecialchars($exp['position'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                                    <h6 class="mb-0" style="color: #a12124;">
+                                        <i class="bi bi-building me-2"></i><?php echo htmlspecialchars($exp['company'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </h6>
+                                </div>
+                                <span class="badge bg-secondary"><?php echo htmlspecialchars($exp['duration'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            </div>
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-geo-alt me-2"></i><?php echo htmlspecialchars($exp['location'], ENT_QUOTES, 'UTF-8'); ?>
+                            </p>
+                            <ul class="mb-0">
+                                <?php foreach ($exp['responsibilities'] as $responsibility): ?>
+                                <li class="mb-2 text-muted"><?php echo htmlspecialchars($responsibility, ENT_QUOTES, 'UTF-8'); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
-            <div class="col-6 col-md">
-                <h5>Resources</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
-                </ul>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">Education</h2>
+            <p class="lead text-muted mb-5">My academic background and achievements</p>
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <?php foreach ($education as $edu): ?>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="education-card">
+                            <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap">
+                                <div>
+                                    <h4 class="fw-bold mb-1"><?php echo htmlspecialchars($edu['degree'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                                    <h6 class="mb-0" style="color: #a12124;">
+                                        <i class="bi bi-mortarboard me-2"></i><?php echo htmlspecialchars($edu['school'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </h6>
+                                </div>
+                                <span class="badge bg-secondary"><?php echo htmlspecialchars($edu['year'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            </div>
+                            <p class="text-muted mb-2">
+                                <i class="bi bi-geo-alt me-2"></i><?php echo htmlspecialchars($edu['location'], ENT_QUOTES, 'UTF-8'); ?>
+                            </p>
+                            <?php if (!empty($edu['honors'])): ?>
+                            <p class="mb-3">
+                                <span class="badge bg-success">
+                                    <i class="bi bi-award me-1"></i><?php echo htmlspecialchars($edu['honors'], ENT_QUOTES, 'UTF-8'); ?>
+                                </span>
+                            </p>
+                            <?php endif; ?>
+                            <ul class="mb-0">
+                                <?php foreach ($edu['highlights'] as $highlight): ?>
+                                <li class="mb-2 text-muted"><?php echo htmlspecialchars($highlight, ENT_QUOTES, 'UTF-8'); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
-            <div class="col-6 col-md">
-                <h5>About</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-                    <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-                </ul>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">My Projects</h2>
+            <p class="lead text-muted mb-4">Showcasing my creative work and technical expertise</p>
+            
+            <?php 
+            $featured_projects = array_filter($projects, function($p) { return isset($p['featured']) && $p['featured']; });
+            $regular_projects = array_filter($projects, function($p) { return !isset($p['featured']) || !$p['featured']; });
+            ?>
+            
+            <?php if (!empty($featured_projects)): ?>
+            <!-- Featured Project -->
+            <div class="mb-5">
+                <?php foreach ($featured_projects as $project): ?>
+                <a href="<?php echo base_url('project/' . $project['slug']); ?>" class="text-decoration-none">
+                <div class="card shadow-lg border-0" style="background: linear-gradient(135deg, #343434 0%, #625f5f 100%); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;" 
+                     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.4)';"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow=''">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge" style="background-color: #a12124; font-size: 0.85rem;">
+                                <i class="bi bi-star-fill me-1"></i>FEATURED PROJECT
+                            </span>
+                            <?php if (isset($project['timeline'])): ?>
+                            <small class="text-white-50 ms-auto">
+                                <i class="bi bi-calendar-event me-1"></i><?php echo htmlspecialchars($project['timeline'], ENT_QUOTES, 'UTF-8'); ?>
+                            </small>
+                            <?php endif; ?>
+                        </div>
+                        <h3 class="fw-bold text-white mb-3"><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                        <p class="text-white-50 mb-4"><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        
+                        <?php if (isset($project['metrics'])): ?>
+                        <div class="row g-3 mb-4">
+                            <?php foreach ($project['metrics'] as $label => $value): ?>
+                            <div class="col-6 col-md-3">
+                                <div class="text-center p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                                    <h4 class="fw-bold mb-1" style="color: #a12124;"><?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?></h4>
+                                    <small class="text-white-50"><?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?></small>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($project['highlights'])): ?>
+                        <div class="mb-4">
+                            <h6 class="text-white fw-semibold mb-3">Key Highlights:</h6>
+                            <div class="row g-2">
+                                <?php foreach ($project['highlights'] as $highlight): ?>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check-circle-fill me-2 mt-1" style="color: #a12124;"></i>
+                                        <small class="text-white-50"><?php echo htmlspecialchars($highlight, ENT_QUOTES, 'UTF-8'); ?></small>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            <small class="text-white-50 me-2">
+                                <i class="bi bi-tools me-1"></i><strong>Tech Stack:</strong>
+                            </small>
+                            <?php 
+                            $tech_items = explode(',', $project['tech']);
+                            foreach ($tech_items as $tech): 
+                            ?>
+                            <span class="badge bg-dark"><?php echo trim(htmlspecialchars($tech, ENT_QUOTES, 'UTF-8')); ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <?php if (isset($project['event'])): ?>
+                        <div class="mt-3 pt-3 border-top border-secondary">
+                            <small class="text-white-50">
+                                <i class="bi bi-calendar-check me-1"></i><?php echo htmlspecialchars($project['event'], ENT_QUOTES, 'UTF-8'); ?>
+                            </small>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                </a>
+                <?php endforeach; ?>
             </div>
+            <?php endif; ?>
+            
+            <!-- Regular Projects Grid -->
+            <div class="row g-4">
+                <?php foreach ($regular_projects as $project): ?>
+                <div class="col-lg-4 col-md-6">
+                    <a href="<?php echo base_url('project/' . $project['slug']); ?>" class="text-decoration-none">
+                    <div class="card project-card shadow-sm h-100" style="cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.15)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow=''">
+                    <?php $card_image = isset($project['featured_image']) ? $project['featured_image'] : $project['image']; ?>
+                    <img src="<?php echo htmlspecialchars($card_image, ENT_QUOTES, 'UTF-8'); ?>" 
+                             class="card-img-top" 
+                             alt="<?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-dark"><?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?></h5>
+                            <p class="card-text text-muted flex-grow-1"><?php echo htmlspecialchars($project['description'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="mb-0 mt-auto">
+                                <small class="fw-semibold" style="color: #a12124;">
+                                    <i class="bi bi-tools me-1"></i><?php echo htmlspecialchars($project['tech'], ENT_QUOTES, 'UTF-8'); ?>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aspirations Section -->
+    <section id="aspirations" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">My Aspirations</h2>
+            <div class="row mt-4">
+                <div class="col-lg-10 mx-auto">
+                    <div class="aspiration-box">
+                        <p class="h5 mb-0 position-relative"><?php echo htmlspecialchars($aspirations, ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack & Approach Section -->
+    <?php if (isset($tech_stack)): ?>
+    <section id="tech-stack" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold">Tech Stack & Approach</h2>
+            <div class="row mt-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h4 class="fw-bold mb-4" style="color: #a12124;">
+                                <i class="bi bi-stack me-2"></i>Tech I Use Today
+                            </h4>
+                            <?php foreach ($tech_stack as $category => $tools): ?>
+                            <div class="mb-3">
+                                <h6 class="fw-semibold text-muted mb-2"><?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></h6>
+                                <p class="mb-0"><?php echo htmlspecialchars($tools, ENT_QUOTES, 'UTF-8'); ?></p>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h4 class="fw-bold mb-4" style="color: #a12124;">
+                                <i class="bi bi-compass me-2"></i>How I Approach Builds
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="bi bi-check-circle-fill me-2" style="color: #a12124;"></i>
+                                    <strong>Start with objectives:</strong> understand what the office/client needs to accomplish
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-check-circle-fill me-2" style="color: #a12124;"></i>
+                                    <strong>Trace the data:</strong> check if the required data already exists in current workflows
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-check-circle-fill me-2" style="color: #a12124;"></i>
+                                    <strong>Leverage the platform:</strong> if the need fits within our system, integrate it cleanly
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-check-circle-fill me-2" style="color: #a12124;"></i>
+                                    <strong>Create what's missing:</strong> if not available, I build it—within the deadline—so the team can move forward
+                                </li>
+                            </ul>
+                            <?php if (isset($clients_stakeholders)): ?>
+                            <div class="mt-4 pt-3 border-top">
+                                <h6 class="fw-semibold mb-2" style="color: #343434;">Clients & Stakeholders</h6>
+                                <p class="mb-0 text-muted"><?php echo htmlspecialchars($clients_stakeholders, ENT_QUOTES, 'UTF-8'); ?></p>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title h1 fw-bold text-center">Get In Touch</h2>
+            <p class="lead text-muted text-center mb-5">Feel free to reach out for collaborations or just a friendly chat!</p>
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="contact-icon mx-auto">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <h5 class="fw-bold">Email</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="contact-icon mx-auto">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <h5 class="fw-bold">Phone</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($phone, ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="contact-icon mx-auto">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h5 class="fw-bold">Location</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($location, ENT_QUOTES, 'UTF-8'); ?></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-2">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>. All rights reserved.</p>
         </div>
     </footer>
-    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animate skill bars on scroll
+        const observeSkills = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('style').match(/width:\s*(\d+%)/)[1];
+                }
+            });
+        });
+
+        document.querySelectorAll('.skill-progress').forEach(el => {
+            observeSkills.observe(el);
+        });
+    </script>
+</body>
 </html>
