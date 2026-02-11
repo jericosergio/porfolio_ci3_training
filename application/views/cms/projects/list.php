@@ -112,26 +112,26 @@
 							<?php foreach ($projects as $project): ?>
 								<tr>
 									<td>
-										<?php echo htmlspecialchars($project->title); ?>
-										<?php if ($project->featured): ?>
+										<?php echo htmlspecialchars($project['title']); ?>
+										<?php if ($project['featured']): ?>
 											<span class="badge badge-featured ms-2">Featured</span>
 										<?php endif; ?>
 									</td>
-									<td><code><?php echo htmlspecialchars($project->slug); ?></code></td>
-									<td><small><?php echo htmlspecialchars(substr($project->tech, 0, 50)); ?>...</small></td>
+									<td><code><?php echo htmlspecialchars($project['slug']); ?></code></td>
+									<td><small><?php echo htmlspecialchars(substr($project['tech'], 0, 50)); ?>...</small></td>
 									<td>
-										<?php if ($project->is_active): ?>
+										<?php if ($project['is_active']): ?>
 											<span class="badge bg-success">Active</span>
 										<?php else: ?>
 											<span class="badge bg-secondary">Inactive</span>
 										<?php endif; ?>
 									</td>
-									<td><?php echo $project->display_order; ?></td>
+									<td><?php echo $project['display_order']; ?></td>
 									<td>
-										<a href="<?php echo base_url('cms/project_edit/' . $project->id); ?>" class="btn btn-sm btn-outline-primary" title="Edit">
+										<a href="<?php echo base_url('cms/project_edit/' . $project['id']); ?>" class="btn btn-sm btn-outline-primary" title="Edit">
 											<i class="bi bi-pencil"></i>
 										</a>
-										<a href="<?php echo base_url('cms/project_delete/' . $project->id); ?>" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this project?');">
+										<a href="<?php echo base_url('cms/project_delete/' . $project['id']); ?>" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this project?');">
 											<i class="bi bi-trash"></i>
 										</a>
 									</td>

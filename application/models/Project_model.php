@@ -51,22 +51,21 @@ class Project_model extends CI_Model
 			'title' => $project->title,
 			'description' => $project->description,
 			'tech' => $project->tech,
-			'image' => $project->image,
+			'image' => $project->image ? base_url($project->image) : NULL,
 			'featured' => (bool)$project->featured,
 			'timeline' => $project->timeline,
-			'full_description' => $project->full_description
+			'full_description' => $project->full_description,
+			'is_active' => (bool)$project->is_active,
+			'display_order' => $project->display_order,
+			'is_training' => (bool)$project->is_training
 		);
 
 		if ($project->featured_image) {
-			$data['featured_image'] = $project->featured_image;
+			$data['featured_image'] = base_url($project->featured_image);
 		}
 
 		if ($project->event) {
 			$data['event'] = $project->event;
-		}
-
-		if ($project->is_training) {
-			$data['is_training'] = TRUE;
 		}
 
 		// Get metrics
@@ -93,7 +92,7 @@ class Project_model extends CI_Model
 	public function get_project_metrics($project_id)
 	{
 		$this->db->order_by('display_order', 'ASC');
-		$query = $this->db->get_where('project_metrics', array('project_id' => $project_id));
+		$query = $this->db->get_where('project_metrics', array('project_id' => $project_id, 'is_active' => 1));
 		
 		$metrics = array();
 		foreach ($query->result() as $metric) {
@@ -106,7 +105,7 @@ class Project_model extends CI_Model
 	public function get_project_highlights($project_id)
 	{
 		$this->db->order_by('display_order', 'ASC');
-		$query = $this->db->get_where('project_highlights', array('project_id' => $project_id));
+		$query = $this->db->get_where('project_highlights', array('project_id' => $project_id, 'is_active' => 1));
 		
 		$highlights = array();
 		foreach ($query->result() as $highlight) {
@@ -119,11 +118,12 @@ class Project_model extends CI_Model
 	public function get_project_images($project_id)
 	{
 		$this->db->order_by('display_order', 'ASC');
-		$query = $this->db->get_where('project_images', array('project_id' => $project_id));
+		$query = $this->db->get_where('project_images', array('project_id' => $project_id, 'is_active' => 1));
 		
 		$images = array();
 		foreach ($query->result() as $image) {
-			$images[] = $image->image_path;
+			// Add base_url() to the image path
+			$images[] = base_url($image->image_path);
 		}
 		
 		return $images;
@@ -177,8 +177,9 @@ class Project_model extends CI_Model
 			'title' => $data['title'],
 			'description' => $data['description'],
 			'tech' => $data['tech'],
-			'featured' => isset($data['featured']) ? 1 : 0,
-			'is_training' => isset($data['is_training']) ? 1 : 0,
+			'featured' => $data['featured'],
+			'is_training' => $data['is_training'],
+            'is_active' => $data['is_active'],
 			'timeline' => isset($data['timeline']) ? $data['timeline'] : NULL,
 			'event' => isset($data['event']) ? $data['event'] : NULL,
 			'full_description' => isset($data['full_description']) ? $data['full_description'] : NULL,
@@ -199,19 +200,33 @@ class Project_model extends CI_Model
 
 		// Update metrics
 		if (isset($data['metrics']) && is_array($data['metrics'])) {
-			$this->db->delete('project_metrics', array('project_id' => $id));
+			// Soft delete existing metrics
+			$this->db->where('project_id', $id);
+			$this->db->update('project_metrics', array('is_active' => 0));
 			$this->save_metrics($id, $data['metrics']);
 		}
 
 		// Update highlights
 		if (isset($data['highlights']) && is_array($data['highlights'])) {
-			$this->db->delete('project_highlights', array('project_id' => $id));
+			// Soft delete existing highlights
+			$this->db->where('project_id', $id);
+			$this->db->update('project_highlights', array('is_active' => 0));
 			$this->save_highlights($id, $data['highlights']);
 		}
 
 		// Update images
+		if (isset($data['remove_images']) && is_array($data['remove_images'])) {
+			// Soft delete specific images
+			foreach ($data['remove_images'] as $image_url) {
+				// Extract just the path without base_url
+				$image_path = str_replace(base_url(), '', $image_url);
+				$this->db->where('project_id', $id);
+				$this->db->where('image_path', $image_path);
+				$this->db->update('project_images', array('is_active' => 0));
+			}
+		}
+
 		if (isset($data['images']) && is_array($data['images'])) {
-			$this->db->delete('project_images', array('project_id' => $id));
 			$this->save_images($id, $data['images']);
 		}
 
@@ -232,7 +247,8 @@ class Project_model extends CI_Model
 				'project_id' => $project_id,
 				'metric_label' => $label,
 				'metric_value' => $value,
-				'display_order' => $order++
+				'display_order' => $order++,
+				'is_active' => 1
 			);
 			$this->db->insert('project_metrics', $data);
 		}
@@ -245,7 +261,8 @@ class Project_model extends CI_Model
 			$data = array(
 				'project_id' => $project_id,
 				'highlight_text' => $highlight,
-				'display_order' => $order++
+				'display_order' => $order++,
+				'is_active' => 1
 			);
 			$this->db->insert('project_highlights', $data);
 		}
@@ -253,12 +270,19 @@ class Project_model extends CI_Model
 
 	private function save_images($project_id, $images)
 	{
-		$order = 0;
+		// Get current max display_order for this project
+		$this->db->select_max('display_order');
+		$this->db->where('project_id', $project_id);
+		$query = $this->db->get('project_images');
+		$result = $query->row();
+		$order = $result->display_order !== NULL ? $result->display_order + 1 : 0;
+		
 		foreach ($images as $image) {
 			$data = array(
 				'project_id' => $project_id,
 				'image_path' => $image,
-				'display_order' => $order++
+				'display_order' => $order++,
+				'is_active' => 1
 			);
 			$this->db->insert('project_images', $data);
 		}
