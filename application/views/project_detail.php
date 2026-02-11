@@ -130,16 +130,43 @@
                     <?php if (isset($project['full_description'])): ?>
                     <div class="mb-5">
                         <?php
-                        // Convert markdown-style bold to HTML
                         $content = $project['full_description'];
-                        $content = preg_replace('/\*\*(.*?)\*\*/s', '<strong>$1</strong>', $content);
+                        
+                        // Split by double newline to get paragraphs
                         $paragraphs = explode("\n\n", $content);
+                        
                         foreach ($paragraphs as $para):
-                            if (strpos($para, '**') === 0 || strpos($para, '<strong>') !== false):
+                            $para = trim($para);
+                            if (empty($para)) continue;
+                            
+                            // Check if this is a heading (starts with **)
+                            if (preg_match('/^\*\*(.*?)\*\*:?$/', $para, $matches)):
                         ?>
-                        <h4 class="fw-bold mt-4 mb-3" style="color: #343434;"><?php echo $para; ?></h4>
-                        <?php else: ?>
-                        <p class="lead text-muted"><?php echo nl2br($para); ?></p>
+                        <h4 class="fw-bold mt-4 mb-3" style="color: #343434;"><?php echo htmlspecialchars($matches[1], ENT_QUOTES, 'UTF-8'); ?></h4>
+                        <?php 
+                            // Check if this is a list item (starts with -)
+                            elseif (strpos($para, '- ') === 0):
+                                // Split multiple list items
+                                $list_items = explode("\n", $para);
+                        ?>
+                        <ul class="list-unstyled ms-3">
+                            <?php foreach ($list_items as $item): 
+                                if (strpos(trim($item), '- ') === 0):
+                                    $item_text = substr(trim($item), 2);
+                                    // Convert inline bold markdown
+                                    $item_text = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $item_text);
+                            ?>
+                            <li class="mb-2"><i class="bi bi-arrow-right-circle-fill me-2" style="color: #a12124;"></i><?php echo $item_text; ?></li>
+                            <?php 
+                                endif;
+                            endforeach; ?>
+                        </ul>
+                        <?php 
+                            else:
+                                // Regular paragraph - convert inline bold markdown
+                                $para = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $para);
+                        ?>
+                        <p class="mb-3" style="line-height: 1.8;"><?php echo nl2br($para); ?></p>
                         <?php 
                             endif;
                         endforeach; 
