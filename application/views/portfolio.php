@@ -186,6 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
                     <li class="nav-item"><a class="nav-link" href="#aspirations">Aspirations</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url('training'); ?>">Training Module</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo base_url('welcome'); ?>">Home</a></li>
                 </ul>
             </div>

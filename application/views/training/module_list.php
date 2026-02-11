@@ -83,6 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url('portfolio#projects'); ?>">Back to Portfolio</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo base_url('portfolio'); ?>">Portfolio</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo base_url('training'); ?>">Training</a></li>
                 </ul>
