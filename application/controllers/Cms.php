@@ -10,6 +10,7 @@ class Cms extends Admin_Controller
         parent::__construct();
         $this->load->model('Project_model');
         $this->load->model('Portfolio_model');
+        $this->load->model('User_model');
         $this->load->library('upload');
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -667,5 +668,195 @@ class Cms extends Admin_Controller
         }
 
         return $uploaded_files;
+    }
+
+    // ======================= USERS CRUD =======================
+
+    public function users()
+    {
+        $data = array(
+            'page_title' => 'Manage Users',
+            'users' => $this->User_model->get_users()
+        );
+
+        $this->load->view('cms/users/list', $data);
+    }
+
+    public function user_form($id = NULL)
+    {
+        $this->load->library('form_validation');
+
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('username', 'Username', 'required|trim');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            $this->form_validation->set_rules('full_name', 'Full Name', 'required|trim');
+
+            // Validate username availability
+            if ($id) {
+                // Edit mode - check if username exists for other users
+                if ($this->User_model->username_exists($this->input->post('username'), $id)) {
+                    $this->form_validation->set_message('username_available', 'This username is already taken.');
+                    $this->form_validation->set_rules('username', 'Username', 'callback_username_available[' . $id . ']');
+                }
+            } else {
+                // Create mode - check if username exists
+                if ($this->User_model->username_exists($this->input->post('username'))) {
+                    $this->form_validation->set_message('username_available', 'This username is already taken.');
+                    $this->form_validation->set_rules('username', 'Username', 'callback_username_available');
+                }
+            }
+
+            // Password validation
+            if (!$id) {
+                // New user - password required
+                $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
+                $this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'matches[password]');
+            } elseif ($this->input->post('password')) {
+                // Edit user - password optional but if provided must be valid
+                $this->form_validation->set_rules('password', 'Password', 'min_length[8]');
+                $this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'matches[password]');
+            }
+
+            if ($this->form_validation->run() === FALSE) {
+                if ($id) {
+                    $user = $this->User_model->get_by_id($id);
+                    $data = array(
+                        'page_title' => 'Edit User',
+                        'user' => $user
+                    );
+                    $this->load->view('cms/users/form', $data);
+                } else {
+                    $data = array(
+                        'page_title' => 'Create User',
+                        'user' => NULL
+                    );
+                    $this->load->view('cms/users/form', $data);
+                }
+            } else {
+                $user_data = array(
+                    'username' => $this->input->post('username'),
+                    'email' => $this->input->post('email'),
+                    'full_name' => $this->input->post('full_name'),
+                    'role' => $this->input->post('role', 'user'),
+                    'is_active' => $this->input->post('is_active', 0)
+                );
+
+                if ($this->input->post('password')) {
+                    $user_data['password'] = $this->input->post('password');
+                }
+
+                if ($id) {
+                    // Update user
+                    $this->User_model->update_user($id, $user_data);
+                    $this->log_activity('update', 'users', $id, 'Updated user: ' . $user_data['username']);
+                    $this->session->set_flashdata('success', 'User updated successfully.');
+                } else {
+                    // Create user
+                    $new_id = $this->User_model->create_user($user_data);
+                    $this->log_activity('create', 'users', $new_id, 'Created new user: ' . $user_data['username']);
+                    $this->session->set_flashdata('success', 'User created successfully.');
+                }
+
+                redirect('cms/users');
+            }
+        } else {
+            if ($id) {
+                $user = $this->User_model->get_by_id($id);
+                if (!$user) {
+                    show_404();
+                }
+                $data = array(
+                    'page_title' => 'Edit User',
+                    'user' => $user
+                );
+                $this->load->view('cms/users/form', $data);
+            } else {
+                $data = array(
+                    'page_title' => 'Create User',
+                    'user' => NULL
+                );
+                $this->load->view('cms/users/form', $data);
+            }
+        }
+    }
+
+    public function user_delete($id)
+    {
+        $user = $this->User_model->get_by_id($id);
+        if (!$user) {
+            show_404();
+        }
+
+        // Don't allow deleting yourself
+        if ($user->id === $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', 'You cannot delete your own account.');
+            redirect('cms/users');
+        }
+
+        $this->User_model->soft_delete_user($id);
+        $this->log_activity('delete', 'users', $id, 'Deactivated user: ' . $user->username);
+        $this->session->set_flashdata('success', 'User deactivated successfully.');
+        
+        redirect('cms/users');
+    }
+
+    // ======================= CHANGE PASSWORD =======================
+
+    public function change_password()
+    {
+        $this->load->library('form_validation');
+        $user_id = $this->session->userdata('user_id');
+
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('old_password', 'Old Password', 'required');
+            $this->form_validation->set_rules('new_password', 'New Password', 'required|min_length[8]');
+            $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'matches[new_password]');
+
+            if ($this->form_validation->run() === FALSE) {
+                $data = array(
+                    'page_title' => 'Change Password'
+                );
+                $this->load->view('cms/change_password', $data);
+            } else {
+                // Verify old password
+                $user = $this->User_model->get_by_id($user_id);
+                
+                if (!password_verify($this->input->post('old_password'), $user->password)) {
+                    $this->session->set_flashdata('error', 'Old password is incorrect.');
+                    redirect('cms/change_password');
+                }
+
+                // Update password
+                $this->User_model->change_password($user_id, $this->input->post('new_password'));
+                $this->log_activity('update', 'users', $user_id, 'Changed password');
+                
+                $this->session->set_flashdata('success', 'Password changed successfully.');
+                redirect('cms/dashboard');
+            }
+        } else {
+            $data = array(
+                'page_title' => 'Change Password'
+            );
+            $this->load->view('cms/change_password', $data);
+        }
+    }
+
+    // Callback function for username validation
+    public function username_available($username = '', $user_id = NULL)
+    {
+        if ($user_id && $user_id !== 'NULL') {
+            // Edit mode
+            if (!$this->User_model->username_exists($username, $user_id)) {
+                return TRUE;
+            }
+        } else {
+            // Create mode
+            if (!$this->User_model->username_exists($username)) {
+                return TRUE;
+            }
+        }
+        
+        $this->form_validation->set_message('username_available', 'This username is already taken.');
+        return FALSE;
     }
 }
