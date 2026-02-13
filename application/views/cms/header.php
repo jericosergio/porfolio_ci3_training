@@ -195,6 +195,25 @@
 			.content-area {
 				padding: 1.5rem;
 			}
+
+			/* Mobile backdrop overlay */
+			.sidebar-backdrop {
+				display: none;
+				position: fixed;
+				top: 60px;
+				left: 0;
+				width: 100%;
+				height: calc(100vh - 60px);
+				background: rgba(0, 0, 0, 0.5);
+				z-index: 1024;
+				opacity: 0;
+				transition: opacity 0.3s ease;
+			}
+
+			.sidebar-backdrop.show {
+				display: block;
+				opacity: 1;
+			}
 		}
 
 		/* Scrollbar Styling */
@@ -239,10 +258,10 @@
 	<!-- Top Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark navbar-cms">
 		<div class="container-fluid">
-			<button class="sidebar-toggle-btn me-2" id="sidebarToggle" title="Toggle Sidebar">
+			<button type="button" class="sidebar-toggle-btn me-2" id="sidebarToggle" title="Toggle Sidebar">
 				<i class="bi bi-list"></i>
 			</button>
-			<a class="navbar-brand" href="<?php echo base_url('cms/dashboard'); ?>">
+			<a class="navbar-brand" href="<?php echo site_url('cms/dashboard'); ?>">
 				<i class="bi bi-speedometer2 me-2"></i>Portfolio CMS
 			</a>
 			<div class="ms-auto">
@@ -271,6 +290,9 @@
 
 	<!-- Main Wrapper -->
 	<div class="cms-wrapper">
+		<!-- Mobile Backdrop -->
+		<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
 		<!-- Sidebar Menu -->
 		<aside class="sidebar" id="sidebar">
 			<div class="sidebar-menu">

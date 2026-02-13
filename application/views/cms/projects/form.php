@@ -1,5 +1,8 @@
 <?php $this->load->view('cms/header'); ?>
 
+<!-- Toast UI Editor CSS -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 <style>
 	.dynamic-field-group {
 		background: #f8f9fa;

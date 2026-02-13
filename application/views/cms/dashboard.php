@@ -79,10 +79,12 @@
 								<div>
 									<strong><?php echo htmlspecialchars($activity->action); ?></strong>
 									<?php if ($activity->description): ?>
-										<br><small class="text-muted"><?php echo htmlspecialchars($activity->description); ?></small>
+										<br><small
+											class="text-muted"><?php echo htmlspecialchars($activity->description); ?></small>
 									<?php endif; ?>
 								</div>
-								<small class="text-muted"><?php echo date('M d, Y h:i A', strtotime($activity->created_at)); ?></small>
+								<small
+									class="text-muted"><?php echo date('M d, Y h:i A', strtotime($activity->created_at)); ?></small>
 							</div>
 						</div>
 					<?php endforeach; ?>
@@ -99,22 +101,26 @@
 			</div>
 			<div class="card-body">
 				<div class="d-grid gap-2">
-					<a href="<?php echo base_url('cms/project_create'); ?>" class="btn btn-primary btn-sm">
+					<a href="<?php echo site_url('cms/project_create'); ?>" class="btn btn-primary btn-sm">
 						<i class="bi bi-plus-circle me-2"></i>New Project
 					</a>
-					<a href="<?php echo base_url('cms/projects'); ?>" class="btn btn-outline-primary btn-sm">
+					<a href="<?php echo site_url('cms/projects'); ?>" class="btn btn-outline-primary btn-sm">
 						<i class="bi bi-folder me-2"></i>Manage Projects
 					</a>
-					<a href="<?php echo base_url('cms/users'); ?>" class="btn btn-outline-primary btn-sm">
+					<a href="<?php echo site_url('cms/users'); ?>" class="btn btn-outline-primary btn-sm">
 						<i class="bi bi-people me-2"></i>Manage Users
 					</a>
-					<a href="<?php echo base_url('cms/change_password'); ?>" class="btn btn-outline-secondary btn-sm">
+					<a href="<?php echo site_url('cms/change_password'); ?>" class="btn btn-outline-secondary btn-sm">
 						<i class="bi bi-lock me-2"></i>Change Password
 					</a>
-					<a href="<?php echo base_url('portfolio'); ?>" class="btn btn-outline-secondary btn-sm" target="_blank">
+					<a href="<?php echo site_url('portfolio'); ?>" class="btn btn-outline-secondary btn-sm"
+						target="_blank">
 						<i class="bi bi-box-arrow-up-right me-2"></i>View Portfolio
 					</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
+</div>
+<?php $this->load->view('cms/footer'); ?>
