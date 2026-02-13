@@ -24,12 +24,19 @@
 	</a>
 </div>
 
+<!-- Info Alert -->
+<div class="alert alert-info mb-4">
+	<i class="bi bi-hand-index-thumb me-2"></i>
+	<strong>Tip:</strong> Drag and drop rows to reorder them. Changes are saved automatically.
+</div>
+
 <!-- Projects Table -->
 <div class="card">
 	<div class="table-responsive">
 		<table class="table table-hover mb-0">
 			<thead class="table-light">
 				<tr>
+					<th width="50"><i class="bi bi-grip-vertical"></i></th>
 					<th>Title</th>
 					<th>Slug</th>
 					<th>Technologies</th>
@@ -38,9 +45,10 @@
 					<th>Actions</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="sortable-projects">
 				<?php foreach ($projects as $project): ?>
-					<tr>
+					<tr data-id="<?php echo $project['id']; ?>" style="cursor: move;">
+						<td class="drag-handle"><i class="bi bi-grip-vertical text-muted"></i></td>
 						<td>
 							<strong><?php echo htmlspecialchars($project['title']); ?></strong>
 							<?php if ($project['featured']): ?>
@@ -56,7 +64,7 @@
 								<span class="badge bg-secondary">Inactive</span>
 							<?php endif; ?>
 						</td>
-						<td><span class="badge bg-light text-dark"><?php echo $project['display_order']; ?></span></td>
+						<td><span class="badge bg-light text-dark order-badge"><?php echo $project['display_order']; ?></span></td>
 						<td>
 							<a href="<?php echo base_url('cms/project_edit/' . $project['id']); ?>" class="btn btn-sm btn-warning" title="Edit">
 								<i class="bi bi-pencil"></i>
@@ -100,16 +108,48 @@ function deleteProject(projectId, projectName) {
 	const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
 	deleteModal.show();
 }
+
+// Drag and drop sorting
+document.addEventListener('DOMContentLoaded', function() {
+	const sortableTable = document.getElementById('sortable-projects');
+	
+	if (sortableTable) {
+		new Sortable(sortableTable, {
+			animation: 150,
+			handle: '.drag-handle',
+			onEnd: function(evt) {
+				const rows = sortableTable.querySelectorAll('tr[data-id]');
+				const order = Array.from(rows).map(row => row.getAttribute('data-id'));
+				
+				fetch('<?php echo site_url('cms/reorder_projects'); ?>', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'X-Requested-With': 'XMLHttpRequest'
+					},
+					body: 'order=' + encodeURIComponent(JSON.stringify(order))
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.status === 'success') {
+						rows.forEach((row, index) => {
+							const badge = row.querySelector('.order-badge');
+							if (badge) badge.textContent = index + 1;
+						});
+						
+						const alertDiv = document.createElement('div');
+						alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+						alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+						alertDiv.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Order updated successfully! <button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+						document.body.appendChild(alertDiv);
+						setTimeout(() => alertDiv.remove(), 3000);
+					}
+				})
+				.catch(error => console.error('Error:', error));
+			}
+		});
+	}
+});
 </script>
 
 <?php $this->load->view('cms/footer'); ?>
-	<script>
-		$(document).ready(function() {
-			$('#projectsTable').DataTable({
-				order: [[4, 'asc']],
-				pageLength: 25
-			});
-		});
-	</script>
-</body>
-</html>

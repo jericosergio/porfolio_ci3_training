@@ -859,4 +859,225 @@ class Cms extends Admin_Controller
         $this->form_validation->set_message('username_available', 'This username is already taken.');
         return FALSE;
     }
+
+    // ======================= DRAG & DROP REORDER METHODS =======================
+    
+    public function reorder_skills()
+    {
+        header('Content-Type: application/json');
+        
+        if (!$this->input->is_ajax_request()) {
+            http_response_code(403);
+            echo json_encode(array('status' => 'error', 'message' => 'Not an AJAX request'));
+            exit;
+        }
+
+        $order = $this->input->post('order');
+        
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(array('status' => 'error', 'message' => 'No order data'));
+            exit;
+        }
+
+        // Parse JSON if it's a string
+        if (is_string($order)) {
+            $order = json_decode($order, true);
+        }
+
+        if ($order && is_array($order)) {
+            foreach ($order as $position => $id) {
+                $this->db->where('id', $id);
+                $this->db->update('skills', array('display_order' => $position + 1));
+            }
+            echo json_encode(array('status' => 'success'));
+            exit;
+        }
+        
+        http_response_code(400);
+        echo json_encode(array('status' => 'error', 'message' => 'Invalid order data'));
+        exit;
+    }
+
+    public function reorder_experience()
+    {
+        header('Content-Type: application/json');
+        
+        if (!$this->input->is_ajax_request()) {
+            http_response_code(403);
+            echo json_encode(array('status' => 'error', 'message' => 'Not an AJAX request'));
+            exit;
+        }
+
+        $order = $this->input->post('order');
+        
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(array('status' => 'error', 'message' => 'No order data'));
+            exit;
+        }
+
+        if (is_string($order)) {
+            $order = json_decode($order, true);
+        }
+
+        if ($order && is_array($order)) {
+            foreach ($order as $position => $id) {
+                $this->db->where('id', $id);
+                $this->db->update('experience', array('display_order' => $position + 1));
+            }
+            echo json_encode(array('status' => 'success'));
+            exit;
+        }
+        
+        http_response_code(400);
+        echo json_encode(array('status' => 'error', 'message' => 'Invalid order data'));
+        exit;
+    }
+
+    public function reorder_education()
+    {
+        header('Content-Type: application/json');
+        
+        if (!$this->input->is_ajax_request()) {
+            http_response_code(403);
+            echo json_encode(array('status' => 'error', 'message' => 'Not an AJAX request'));
+            exit;
+        }
+
+        $order = $this->input->post('order');
+        
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(array('status' => 'error', 'message' => 'No order data'));
+            exit;
+        }
+
+        if (is_string($order)) {
+            $order = json_decode($order, true);
+        }
+
+        if ($order && is_array($order)) {
+            foreach ($order as $position => $id) {
+                $this->db->where('id', $id);
+                $this->db->update('education', array('display_order' => $position + 1));
+            }
+            echo json_encode(array('status' => 'success'));
+            exit;
+        }
+        
+        http_response_code(400);
+        echo json_encode(array('status' => 'error', 'message' => 'Invalid order data'));
+        exit;
+    }
+
+    public function reorder_tech_stack()
+    {
+        header('Content-Type: application/json');
+        
+        if (!$this->input->is_ajax_request()) {
+            http_response_code(403);
+            echo json_encode(array('status' => 'error', 'message' => 'Not an AJAX request'));
+            exit;
+        }
+
+        $order = $this->input->post('order');
+        
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(array('status' => 'error', 'message' => 'No order data'));
+            exit;
+        }
+
+        if (is_string($order)) {
+            $order = json_decode($order, true);
+        }
+
+        if ($order && is_array($order)) {
+            foreach ($order as $position => $id) {
+                $this->db->where('id', $id);
+                $this->db->update('tech_stack', array('display_order' => $position + 1));
+            }
+            echo json_encode(array('status' => 'success'));
+            exit;
+        }
+        
+        http_response_code(400);
+        echo json_encode(array('status' => 'error', 'message' => 'Invalid order data'));
+        exit;
+    }
+
+    public function reorder_projects()
+    {
+        header('Content-Type: application/json');
+        
+        if (!$this->input->is_ajax_request()) {
+            http_response_code(403);
+            echo json_encode(array('status' => 'error', 'message' => 'Not an AJAX request'));
+            exit;
+        }
+
+        $order = $this->input->post('order');
+        
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(array('status' => 'error', 'message' => 'No order data'));
+            exit;
+        }
+
+        if (is_string($order)) {
+            $order = json_decode($order, true);
+        }
+
+        if ($order && is_array($order)) {
+            foreach ($order as $position => $id) {
+                $this->db->where('id', $id);
+                $this->db->update('projects', array('display_order' => $position + 1));
+            }
+            echo json_encode(array('status' => 'success'));
+            exit;
+        }
+        
+        http_response_code(400);
+        echo json_encode(array('status' => 'error', 'message' => 'Invalid order data'));
+        exit;
+    }
+
+    // ======================= PORTFOLIO MANAGEMENT =======================
+    
+    public function portfolio_settings()
+    {
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('name', 'Name', 'required|trim');
+            $this->form_validation->set_rules('tagline', 'Tagline', 'required|trim');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+            $this->form_validation->set_rules('phone', 'Phone', 'trim');
+            $this->form_validation->set_rules('location', 'Location', 'trim');
+
+            if ($this->form_validation->run()) {
+                // Update all portfolio data
+                $this->Portfolio_model->set('name', $this->input->post('name', TRUE));
+                $this->Portfolio_model->set('tagline', $this->input->post('tagline', TRUE));
+                $this->Portfolio_model->set('about', $this->input->post('about'));
+                $this->Portfolio_model->set('email', $this->input->post('email', TRUE));
+                $this->Portfolio_model->set('work_email', $this->input->post('work_email', TRUE));
+                $this->Portfolio_model->set('phone', $this->input->post('phone', TRUE));
+                $this->Portfolio_model->set('location', $this->input->post('location', TRUE));
+                $this->Portfolio_model->set('github', $this->input->post('github', TRUE));
+                $this->Portfolio_model->set('linkedin', $this->input->post('linkedin', TRUE));
+                $this->Portfolio_model->set('aspirations', $this->input->post('aspirations'));
+                $this->Portfolio_model->set('clients_stakeholders', $this->input->post('clients_stakeholders'));
+
+                $this->session->set_flashdata('success', 'Portfolio settings updated successfully!');
+                redirect('cms/portfolio_settings');
+            }
+        }
+
+        $data = array(
+            'page_title' => 'Portfolio Settings',
+            'portfolio_data' => $this->Portfolio_model->get_all()
+        );
+
+        $this->load->view('cms/portfolio_settings', $data);
+    }
 }

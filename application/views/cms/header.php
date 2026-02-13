@@ -278,6 +278,26 @@
 					<i class="bi bi-house-door"></i>
 					<span>Dashboard</span>
 				</a>
+				<a href="<?php echo site_url('cms/portfolio_settings'); ?>" class="<?php echo strpos(current_url(), 'portfolio_settings') !== FALSE ? 'active' : ''; ?>">
+					<i class="bi bi-person-badge"></i>
+					<span>Portfolio Info</span>
+				</a>
+				<a href="<?php echo site_url('cms/skills'); ?>" class="<?php echo strpos(current_url(), 'skill') !== FALSE ? 'active' : ''; ?>">
+					<i class="bi bi-stars"></i>
+					<span>Skills</span>
+				</a>
+				<a href="<?php echo site_url('cms/experience'); ?>" class="<?php echo strpos(current_url(), 'experience') !== FALSE ? 'active' : ''; ?>">
+					<i class="bi bi-building"></i>
+					<span>Experience</span>
+				</a>
+				<a href="<?php echo site_url('cms/education'); ?>" class="<?php echo strpos(current_url(), 'education') !== FALSE ? 'active' : ''; ?>">
+					<i class="bi bi-mortarboard"></i>
+					<span>Education</span>
+				</a>
+				<a href="<?php echo site_url('cms/tech_stack'); ?>" class="<?php echo strpos(current_url(), 'tech_stack') !== FALSE ? 'active' : ''; ?>">
+					<i class="bi bi-cpu"></i>
+					<span>Tech Stack</span>
+				</a>
 				<a href="<?php echo site_url('cms/projects'); ?>" class="<?php echo strpos(current_url(), 'projects') !== FALSE ? 'active' : ''; ?>">
 					<i class="bi bi-briefcase"></i>
 					<span>Projects</span>

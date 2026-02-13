@@ -10,23 +10,23 @@
 
 <!-- Page Title -->
 <div class="d-flex align-items-center justify-content-between mb-4">
-	<h1 class="mb-0"><i class="bi bi-stars me-2"></i><?php echo $page_title; ?></h1>
-	<a href="<?php echo site_url('cms/skill_form'); ?>" class="btn btn-primary">
-		<i class="bi bi-plus-circle me-2"></i>Add New Skill
+	<h1 class="mb-0"><i class="bi bi-building me-2"></i><?php echo $page_title; ?></h1>
+	<a href="<?php echo site_url('cms/experience_form'); ?>" class="btn btn-primary">
+		<i class="bi bi-plus-circle me-2"></i>Add New Experience
 	</a>
 </div>
 
-<!-- Skills List -->
+<!-- Experience List -->
 <div class="card">
 	<div class="card-body">
 		<?php 
 		$this->db->order_by('display_order', 'ASC');
-		$all_skills = $this->db->get('skills')->result();
+		$all_experience = $this->db->get('experience')->result();
 		?>
-		<?php if (empty($all_skills)): ?>
+		<?php if (empty($all_experience)): ?>
 			<div class="text-center py-5">
 				<i class="bi bi-inbox display-1 text-muted"></i>
-				<p class="text-muted mt-3">No skills added yet. Click "Add New Skill" to get started.</p>
+				<p class="text-muted mt-3">No experience added yet. Click "Add New Experience" to get started.</p>
 			</div>
 		<?php else: ?>
 			<div class="alert alert-info mb-3">
@@ -38,44 +38,43 @@
 					<thead>
 						<tr>
 							<th width="50"><i class="bi bi-grip-vertical"></i></th>
-							<th>Skill Name</th>
-							<th>Proficiency Level</th>
+							<th>Position</th>
+							<th>Company</th>
+							<th>Duration</th>
 							<th class="text-center">Display Order</th>
 							<th class="text-center">Status</th>
 							<th class="text-end">Actions</th>
 						</tr>
 					</thead>
-					<tbody id="sortable-skills">
-						<?php foreach ($all_skills as $skill): ?>
-							<tr data-id="<?php echo $skill->id; ?>" style="cursor: move;">
+					<tbody id="sortable-experience">
+						<?php foreach ($all_experience as $exp): ?>
+							<tr data-id="<?php echo $exp->id; ?>" style="cursor: move;">
 								<td class="drag-handle"><i class="bi bi-grip-vertical text-muted"></i></td>
 								<td>
-									<strong><?php echo htmlspecialchars($skill->name); ?></strong>
+									<strong><?php echo htmlspecialchars($exp->position); ?></strong>
 								</td>
 								<td>
-									<div class="d-flex align-items-center">
-										<div class="progress flex-grow-1 me-2" style="height: 20px; min-width: 200px;">
-											<div class="progress-bar" role="progressbar" style="width: <?php echo $skill->level; ?>%" aria-valuenow="<?php echo $skill->level; ?>" aria-valuemin="0" aria-valuemax="100">
-												<?php echo $skill->level; ?>%
-											</div>
-										</div>
-									</div>
+									<?php echo htmlspecialchars($exp->company); ?>
+									<br><small class="text-muted"><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($exp->location); ?></small>
+								</td>
+								<td>
+									<span class="badge bg-info"><?php echo htmlspecialchars($exp->duration); ?></span>
 								</td>
 								<td class="text-center">
-									<span class="badge bg-secondary"><?php echo $skill->display_order; ?></span>
+									<span class="badge bg-secondary"><?php echo $exp->display_order; ?></span>
 								</td>
 								<td class="text-center">
-									<?php if ($skill->is_active): ?>
+									<?php if ($exp->is_active): ?>
 										<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Active</span>
 									<?php else: ?>
 										<span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i>Inactive</span>
 									<?php endif; ?>
 								</td>
 								<td class="text-end">
-									<a href="<?php echo site_url('cms/skill_form/' . $skill->id); ?>" class="btn btn-sm btn-outline-primary" title="Edit">
+									<a href="<?php echo site_url('cms/experience_form/' . $exp->id); ?>" class="btn btn-sm btn-outline-primary" title="Edit">
 										<i class="bi bi-pencil"></i>
 									</a>
-									<a href="<?php echo site_url('cms/skill_delete/' . $skill->id); ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this skill?');" title="Delete">
+									<a href="<?php echo site_url('cms/experience_delete/' . $exp->id); ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this experience?');" title="Delete">
 										<i class="bi bi-trash"></i>
 									</a>
 								</td>
@@ -90,19 +89,17 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-	const sortableTable = document.getElementById('sortable-skills');
+	const sortableTable = document.getElementById('sortable-experience');
 	
 	if (sortableTable) {
 		new Sortable(sortableTable, {
 			animation: 150,
 			handle: '.drag-handle',
 			onEnd: function(evt) {
-				// Get all row IDs in new order
 				const rows = sortableTable.querySelectorAll('tr[data-id]');
 				const order = Array.from(rows).map(row => row.getAttribute('data-id'));
 				
-				// Send AJAX request to update order
-				fetch('<?php echo site_url('cms/reorder_skills'); ?>', {
+				fetch('<?php echo site_url('cms/reorder_experience'); ?>', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
@@ -113,13 +110,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				.then(response => response.json())
 				.then(data => {
 					if (data.status === 'success') {
-						// Update display order badges
 						rows.forEach((row, index) => {
 							const badge = row.querySelector('.badge.bg-secondary');
 							if (badge) badge.textContent = index + 1;
 						});
 						
-						// Show success message briefly
 						const alertDiv = document.createElement('div');
 						alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
 						alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
