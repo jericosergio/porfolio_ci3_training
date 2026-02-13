@@ -106,19 +106,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="row g-4">
                 <?php foreach ($modules as $module): ?>
                 <div class="col-lg-4 col-md-6">
-                    <a href="<?php echo base_url('training/module/' . $module['slug']); ?>" class="text-decoration-none">
+                    <?php 
+                    // Direct link for calculator module, otherwise use module viewer
+                    $module_url = ($module['slug'] === 'calculator') 
+                        ? base_url('training/calculator') 
+                        : base_url('training/module/' . $module['slug']);
+                    ?>
+                    <a href="<?php echo $module_url; ?>" class="text-decoration-none">
                     <div class="card module-card shadow-sm h-100">
                         <div class="module-header">
-                            <h5 class="card-title fw-bold mb-0"><?php echo htmlspecialchars($module['title'], ENT_QUOTES, 'UTF-8'); ?></h5>
+                            <h5 class="card-title fw-bold mb-0">
+                                <?php if ($module['slug'] === 'calculator'): ?>
+                                    <i class="bi bi-calculator me-2"></i>
+                                <?php endif; ?>
+                                <?php echo htmlspecialchars($module['title'], ENT_QUOTES, 'UTF-8'); ?>
+                            </h5>
                         </div>
                         <div class="module-body">
                             <p class="module-duration">
-                                <i class="bi bi-clock me-1"></i><?php echo htmlspecialchars($module['duration'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php if ($module['slug'] === 'calculator'): ?>
+                                    <i class="bi bi-tools me-1"></i><?php echo htmlspecialchars($module['duration'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php else: ?>
+                                    <i class="bi bi-clock me-1"></i><?php echo htmlspecialchars($module['duration'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php endif; ?>
                             </p>
                             <p class="text-muted mb-3"><?php echo htmlspecialchars($module['description'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p class="text-muted mb-0">
-                                <small><i class="bi bi-collection me-1" style="color: #a12124;"></i><?php echo count($module['slides']); ?> slides</small>
-                            </p>
+                            <?php if ($module['slug'] !== 'calculator'): ?>
+                                <p class="text-muted mb-0">
+                                    <small><i class="bi bi-collection me-1" style="color: #a12124;"></i><?php echo count($module['slides']); ?> slides</small>
+                                </p>
+                            <?php else: ?>
+                                <p class="text-muted mb-0">
+                                    <small><i class="bi bi-calculator-fill me-1" style="color: #a12124;"></i>Standard & Scientific</small>
+                                </p>
+                            <?php endif; ?>
                         </div>
                     </div>
                     </a>

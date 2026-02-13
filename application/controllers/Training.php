@@ -1939,7 +1939,23 @@ $db["default"]["password"] = getenv("DB_PASS");',
 					),
 				)
 			),
+			array(
+				'slug' => 'calculator',
+				'title' => 'Calculator Module',
+				'description' => 'Standard and Scientific Calculator with real-time calculations and history tracking',
+				'duration' => 'Interactive Tool',
+				'slides' => array() // Calculator has no slides, it's an interactive tool
+			),
 		);
+	}
+
+	public function calculator()
+	{
+		$data = array(
+			'name' => 'Mat Jerico Sergio',
+		);
+
+		$this->load->view('training/calculator', $data);
 	}
 
 }
